@@ -1,1 +1,7 @@
-bins
+/.redo
+/d2b
+/gen
+/nkneighbours
+/nktest
+*.o
+*.d
