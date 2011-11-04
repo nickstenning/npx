@@ -1,0 +1,23 @@
+#!/bin/bash
+USAGE="Usage: $0 col_num file1 file2 file3 ... fileN"
+
+if [ $# -lt 1 ]; then
+  echo "${USAGE}"
+  exit 1
+fi
+
+COLNUM="${1}"
+shift
+
+I=0
+ARGS=()
+
+for f in "$@"; do
+  ARGS[$i]="<(awk '{print \$${COLNUM}}' ${f})"
+  ((++i))
+done  
+
+
+eval paste "${ARGS[@]}"
+
+
