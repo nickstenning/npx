@@ -2,7 +2,11 @@
 #define NK_H
 
 #include <vector>
-#include "ga/genome.h"
+
+namespace ga
+{
+  class Genome;
+}
 
 namespace nk
 {
@@ -17,17 +21,17 @@ namespace nk
      *
      * @return a float in [0,1]
     **/
-    double evaluate(ga::Genome const& g);
+    double evaluate(ga::Genome const& g) const;
 
     /** Evaluate fitness of gene at position `i` in genome `g`
     **/
-    double evaluate_position(unsigned int i, ga::Genome const& g);
-
+    double evaluate_position(unsigned int i, ga::Genome const& g) const;
 
   private:
     unsigned int _n;
     unsigned int _k;
 
+    unsigned long _id;
   };
 
 } /* nk:: */
