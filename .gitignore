@@ -1,7 +1,8 @@
 /.redo
-/d2b
+/evolve
 /gen
 /nkneighbours
 /nktest
 *.o
 *.d
+*.dSYM
