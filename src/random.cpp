@@ -1,5 +1,5 @@
-#include <cstdlib>
 #include <random>
+#include <cstdlib>
 #include <cstdint>
 
 #include "random.h"
@@ -62,10 +62,10 @@ void util::random::init ()
   uintmax_t seed;
   char const* envSeed;
 
-  envSeed = getenv("RNG_SEED");
+  envSeed = std::getenv("RNG_SEED");
 
   if (envSeed != NULL) {
-    seed = strtoul(envSeed, NULL, 0);
+    seed = std::strtoul(envSeed, NULL, 0);
     global_rng.seed(seed);
   }
 }
@@ -83,9 +83,4 @@ double util::random::uniform (double a, double b)
 uintmax_t util::random::rand_uint (uintmax_t max)
 {
   return global_rng.rand_uint(max);
-}
-
-std::mt19937_64& util::random::get_engine ()
-{
-  return global_rng._engine;
 }
