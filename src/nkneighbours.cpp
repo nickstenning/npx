@@ -25,14 +25,8 @@ int main (int argc, char const *argv[])
 
   util::random::init();
 
-  // Read one genome from stdin
-  unsigned long ul;
-  std::string line;
-  if (!std::getline(std::cin, line)) {
-    return 1;
-  }
-  ul = std::strtoul(line.c_str(), NULL, 0);
-  ga::Genome g(n, ul);
+  ga::Genome g(n);
+  std::cin >> g;
 
   // Generate a random NK landscape
   nk::Landscape landscape(n, k);
