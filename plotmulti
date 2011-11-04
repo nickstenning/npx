@@ -1,0 +1,19 @@
+#!/Users/borior/code/venv/sci/bin/python
+
+import os
+import sys
+import pylab
+import numpy as np
+
+data = np.loadtxt(sys.stdin, unpack=True)
+x = np.arange(len(data[0]))
+
+for i, d in enumerate(data):
+    pylab.plot(x, d, label="col %d" % i)
+
+pylab.legend()
+
+if os.isatty(sys.stdout.fileno()):
+    pylab.show()
+else:
+    pylab.savefig(sys.stdout, format='png')
