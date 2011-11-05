@@ -1,0 +1,13 @@
+# $1 -- object file
+# output -- list of object files that should be included when linking $1
+
+P=${1%.o}
+
+read DEPS < "$P.d"
+
+for d in ${DEPS#*:}; do 
+    echo $(dirname $P)/$(echo ${d%.*} | cut -d/ -f3- | sed 's/\//__/g').o; 
+done |
+grep -v "$P.o" |
+sort | 
+uniq

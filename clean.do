@@ -1,4 +1,6 @@
 rm -rf .redo
+rm -f compile
+rm -f link
 
 if [ -e .do_built ]; then
   while read x; do

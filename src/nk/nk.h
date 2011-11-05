@@ -27,6 +27,8 @@ namespace nk
     **/
     double evaluate_position(unsigned int i, ga::Genome const& g) const;
 
+    unsigned long id() const { return this->_id; }
+
   private:
     unsigned int _n;
     unsigned int _k;
