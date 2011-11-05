@@ -3,6 +3,8 @@
 !/bin/*.do
 /build/*
 !/build/*.do
+/compile
+/link
 *.o
 *.d
 *.dSYM
