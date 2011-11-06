@@ -1,8 +1,6 @@
 /.redo
 /bin/*
 !/bin/*.do
-/build/*
-!/build/*.do
 /compile
 /link
 *.sublime-workspace
