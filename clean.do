@@ -1,12 +1,10 @@
 rm -rf .redo
-rm -f compile
-rm -f link
+rm -f compile link runtests
 
 if [ -e .do_built ]; then
   while read x; do
     [ -d "$x" ] || rm -f "$x"
   done <.do_built
-
 fi
 [ -z "$DO_BUILT" ] && rm -rf .do_built .do_built.dir
 

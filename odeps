@@ -1,13 +1,54 @@
-# $1 -- object file
-# output -- list of object files that should be included when linking $1
+#!/usr/bin/env python
 
-P=${1%.o}
+import os
+import re
+import sys
 
-read DEPS < "$P.d"
+ROOT = os.path.dirname(__file__)
+BUILD = os.path.join(ROOT, 'build')
+SRC = os.path.join(ROOT, 'src')
 
-for d in ${DEPS#*:}; do 
-    echo $(dirname $P)/$(echo ${d%.*} | cut -d/ -f3- | sed 's/\//__/g').o; 
-done |
-grep -v "$P.o" |
-sort | 
-uniq
+SRC_FROM_BUILD = os.path.relpath(SRC, BUILD)
+
+def dep_to_ofile(filename):
+    filename = re.sub(r'^%s/' % SRC_FROM_BUILD, '', filename)
+    if filename[-4:] == '.cpp':
+        return None
+    elif filename[-2:] == '.h':
+        return filename[:-2] + '.o'
+
+def parse_dfile(filename):
+    contents = open(filename).read().replace('\\\n', '')
+    contents = re.sub(r'[^:]+:', '', contents)
+    return filter(lambda x: x, map(dep_to_ofile, contents.split()))
+
+def odeps(filename, recurse=True):
+    if not filename[-2:] == '.o':
+        raise Exception("That's not an object file")
+
+    obj_from_build = os.path.relpath(filename, BUILD)
+
+    if '..' in obj_from_build:
+        raise Exception("Can't give deps for object files outside of BUILD dir")
+
+    prepend = filename[:-len(obj_from_build)]
+
+    deps = set()
+    deps.update(prepend + x for x in parse_dfile(filename[:-2] + '.d'))
+    deps.discard(filename)
+
+    if recurse:
+        for d in deps.copy():
+            deps.update(odeps(d))
+
+    return deps
+
+def main(filename, recurse=True):
+    for d in odeps(filename, recurse):
+        print d
+
+if __name__ == '__main__':
+    if sys.argv[1] == '-n':
+        main(sys.argv[2], False)
+    else:
+        main(sys.argv[1])
