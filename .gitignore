@@ -5,6 +5,7 @@
 !/build/*.do
 /compile
 /link
+*.sublime-workspace
 *.o
 *.d
 *.dSYM
