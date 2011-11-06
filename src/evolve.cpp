@@ -47,7 +47,7 @@ int main (int argc, char const *argv[])
     while(cin >> g) {
       g.fitness(evaluate(g));
       pop.push_back(g);
-    };   
+    };
   }
 
   // Now, we have initialized the population. Enter the GA.
@@ -122,11 +122,11 @@ void print_stats (int generation, ga::Population const& p)
     scores[it - p.cbegin()] = f;
     sum += f;
   }
-  
+
   double min = *min_element(scores.begin(), scores.end());
   double max = *max_element(scores.begin(), scores.end());
   double mean = sum / scores.size();
-  
+
   for (auto it = scores.cbegin(); it != scores.cend(); ++it) {
     sumsq += pow(*it - mean, 2);
   }
