@@ -1,5 +1,17 @@
 #!/usr/bin/env python
 
+"""
+odeps: Return a list of object files that the specified object file
+       depends on and should be linked with. Assumes that a partner
+       file path/to/foo.d exists alongside path/to/foo.o containing
+       GCC/Clang's dependency output.
+
+Usage: odeps [-n] path/to/foo.o
+
+    -n    Don't calculate dependencies recursively:
+          only print deps from first object file
+"""
+
 import os
 import re
 import sys
@@ -18,9 +30,12 @@ def dep_to_ofile(filename):
         return filename[:-2] + '.o'
 
 def parse_dfile(filename):
+    # Remove escaped newlines
     contents = open(filename).read().replace('\\\n', '')
+    # Remove target name
     contents = re.sub(r'[^:]+:', '', contents)
-    return filter(lambda x: x, map(dep_to_ofile, contents.split()))
+    o_files = map(dep_to_ofile, contents.split())
+    return filter(None, o_files)
 
 def odeps(filename, recurse=True):
     if not filename[-2:] == '.o':
