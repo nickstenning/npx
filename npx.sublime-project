@@ -3,7 +3,7 @@
 	[
     {
       "path": ".",
-      "folder_exclude_patterns": ["bin", "build"]
+      "folder_exclude_patterns": []
     }
 	]
 }

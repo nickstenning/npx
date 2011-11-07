@@ -1,1 +1,2 @@
-./bins | xargs redo-ifchange
+./tools/bins src | xargs redo-ifchange
+redo-ifchange build/runtests

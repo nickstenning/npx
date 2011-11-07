@@ -8,6 +8,6 @@ redo-ifchange config.sh
 #     $4 - any additional CFLAGS
 
 cat > "$3" <<-EOF    
-    clang++ -MMD -MF "\$3" $CFLAGS \$4 -Isrc -c -o "\$2" "\$1"
+    clang++ -MMD -MF "\$3" $CFLAGS \$4 -I../src -c -o "\$2" "\$1"
 EOF
 chmod a+x "$3"

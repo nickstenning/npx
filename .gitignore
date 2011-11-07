@@ -1,8 +1,11 @@
 /.redo
-/bin/*
-!/bin/*.do
-/compile
-/link
+/build/evolve
+/build/gen
+/build/nkneighbours
+/build/nktest
+/build/compile
+/build/link
+/build/runtests
 *.sublime-workspace
 *.o
 *.d

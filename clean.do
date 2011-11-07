@@ -1,5 +1,7 @@
 rm -rf .redo
-rm -f compile link runtests
+rm -f build/compile 
+rm -f build/link 
+rm -f build/runtests
 
 if [ -e .do_built ]; then
   while read x; do
@@ -8,7 +10,7 @@ if [ -e .do_built ]; then
 fi
 [ -z "$DO_BUILT" ] && rm -rf .do_built .do_built.dir
 
-./bins | xargs rm -f
+./tools/bins src/ | xargs rm -f
 
 find . -name '*.tmp' -exec rm -fv {} \;
 find . -name '*.o' -exec rm -fv {} \;

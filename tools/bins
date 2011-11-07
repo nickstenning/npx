@@ -1,0 +1,8 @@
+# Build binaries from .cpp files missing .h partners
+# in the root of $1
+
+for f in $(find "$1" -depth 1 -name '*.cpp'); do
+  if [ ! -e ${f%.*}.h ]; then
+    echo build/$(basename ${f%.*})
+  fi
+done

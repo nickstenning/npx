@@ -4,7 +4,7 @@ import os
 import re
 import sys
 
-ROOT = os.path.dirname(__file__)
+ROOT = os.path.join(os.path.dirname(__file__), '..')
 BUILD = os.path.join(ROOT, 'build')
 SRC = os.path.join(ROOT, 'src')
 
