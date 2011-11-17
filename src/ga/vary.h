@@ -6,7 +6,7 @@
 
 namespace ga {
 
-  typedef Genome const& (*_fp_genome_selector)(Population const&);
+  typedef Population::const_iterator (*_fp_genome_selector)(Population const&);
 
   Genome mutate_single(Genome const&);
   Genome mutate_uniform(Genome const&);

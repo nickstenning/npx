@@ -7,12 +7,12 @@
 #include "nk/nk.h"
 #include "ga/population.h"
 #include "ga/genome.h"
+#include "ga/select.h"
 #include "ga/vary.h"
 
 using namespace std;
 
 static ga::Population pop;
-static ga::Genome const* best_so_far;
 
 ga::Genome const& select (ga::Population const& p);
 ga::Population::iterator select (ga::Population& p);
@@ -57,13 +57,16 @@ int main (int argc, char const *argv[])
   while (true) {
     // Print population statistics every "generation"
     if (tick % pop.size() == 0) {
+      pop.compute_stats();
       print_stats(tick / pop.size(), pop);
+    } else {
+      pop.update_best_so_far(); // Mustn't miss any brilliance between "generations".
     }
 
     // Select a random member of the population
-    ga::Population::iterator cand_it = select(pop);
+    ga::Population::iterator cand_it = ga::select_random(pop);
     // Select another random member of the population
-    ga::Population::iterator other_it = select(pop);
+    ga::Population::iterator other_it = ga::select_random(pop);
 
     // Mutate (and copy)
     ga::Genome cand = ga::mutate_single(*cand_it);
@@ -71,7 +74,7 @@ int main (int argc, char const *argv[])
     // Crossover
     // cand = ga::crossover_binary_1point(cand, *select(pop));
     // cand = ga::crossover_binary_uniform(cand, *select(pop));
-    cand = ga::crossover_nary_uniform_weighted(5, 0.2, pop, select);
+    cand = ga::crossover_nary_uniform_weighted(10, 0.5, pop, ga::select_random);
 
     // Update the individual with its new fitness
     cand.fitness(evaluate(cand));
@@ -87,58 +90,16 @@ int main (int argc, char const *argv[])
   return 0;
 }
 
-// Random selection
-ga::Population::iterator select (ga::Population& p)
+void print_stats_header ()
 {
-  ga::Population::iterator it = p.begin();
-  unsigned int inc_num = util::random::rand_uint(pop.size() - 1);
-  for (; inc_num > 0; --inc_num)
-    ++it;
-  return it;
+  fprintf(stdout, "#%9s%10s%10s%10s%10s%10s\n", "gen", "min", "max", "mean", "stddev", "bsf");
+  fflush(stdout);
 }
 
-ga::Genome const& select (ga::Population const& p)
+void print_stats (int generation, ga::Population const& pop)
 {
-  ga::Population::const_iterator it = p.cbegin();
-  unsigned int inc_num = util::random::rand_uint(pop.size() - 1);
-  for (; inc_num > 0; --inc_num)
-    ++it;
-  return *it;
+  ga::Population::Stats s = pop.stats();
+  fprintf(stdout, "%10d%10.4g%10.4g%10.4g%10.4g%10.4g\n", generation, s.min, s.max, s.mean, s.sdev, s.best_so_far);
+  fflush(stdout);
 }
 
-void print_stats_header (void)
-{
-  printf("#%9s%10s%10s%10s%10s%10s", "gen", "min", "max", "mean", "stddev", "bsf");
-  cout << endl;
-}
-
-void print_stats (int generation, ga::Population const& p)
-{
-  vector<double> scores(p.size());
-  double sum = 0;
-  double sumsq = 0;
-
-  for (auto it = p.cbegin(); it != p.cend(); ++it) {
-    double f = it->fitness();
-
-    if (best_so_far == NULL || f > best_so_far->fitness()) {
-      best_so_far = &(*it);
-    }
-
-    scores[it - p.cbegin()] = f;
-    sum += f;
-  }
-
-  double min = *min_element(scores.begin(), scores.end());
-  double max = *max_element(scores.begin(), scores.end());
-  double mean = sum / scores.size();
-
-  for (auto it = scores.cbegin(); it != scores.cend(); ++it) {
-    sumsq += pow(*it - mean, 2);
-  }
-
-  double stddev = sqrt(sumsq / scores.size());
-
-  printf("%10d%10.4g%10.4g%10.4g%10.4g%10.4g", generation, min, max, mean, stddev, best_so_far->fitness());
-  cout << endl;
-}

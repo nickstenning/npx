@@ -69,7 +69,7 @@ Genome ga::crossover_nary_uniform_weighted(unsigned int n_parents,
 
   // Select parents
   for (unsigned int i = 0; i < n_parents; ++i) {
-    parents[i] = select(pop);
+    parents[i] = *select(pop);
   }
 
   // Create target genome from first parent
