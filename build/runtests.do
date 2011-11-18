@@ -15,4 +15,4 @@ uniq)
 
 redo-ifchange ${ALL_OFILES}
 
-clang++ -lc++ -lboost_unit_test_framework-mt -o"$3" ${ALL_OFILES}
+clang++ -lc++ -o"$3" ${ALL_OFILES}

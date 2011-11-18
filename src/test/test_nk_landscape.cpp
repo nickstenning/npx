@@ -1,13 +1,9 @@
 #include "nk/nk.h"
 #include "ga/genome.h"
 
-#include <iostream>
-
-using namespace std;
-
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(nk_landscape)
+BOOST_AUTO_TEST_SUITE(nk_landscape);
 
 BOOST_AUTO_TEST_CASE(has_unique_id)
 {
@@ -117,4 +113,4 @@ BOOST_AUTO_TEST_CASE(evaluate_position_maximal_epistasis)
   BOOST_CHECK( before != after );
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END();
