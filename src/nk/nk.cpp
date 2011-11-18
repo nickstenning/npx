@@ -9,17 +9,29 @@
 #include "ga/genome.h"
 #include "random.h"
 
-nk::Landscape::Landscape (unsigned int n, unsigned int k)
+nk::Landscape::Landscape (unsigned int n, unsigned int k, unsigned long id)
 : _n(n)
 , _k(k)
-, _id(util::random::rand_uint())
+, _id(id)
+{}
+
+nk::Landscape::Landscape (unsigned long id)
+: _n(0)
+, _k(0)
+, _id(id)
 {}
 
 nk::Landscape::~Landscape ()
 {}
 
-double nk::Landscape::evaluate (ga::Genome const& g) const
+double nk::Landscape::evaluate (ga::Genome const& g) const throw(InvalidGenomeSize)
 {
+  // Throw if genome size != N
+  if (g.size() != this->_n) throw nk::Landscape::InvalidGenomeSize();
+
+  // Short-circuit if N == 0
+  if (g.size() == 0) return 0.0;
+
   double total = 0;
   for (unsigned int i = 0; i < g.size(); ++i) {
     total += this->evaluate_position(i, g);
@@ -27,8 +39,14 @@ double nk::Landscape::evaluate (ga::Genome const& g) const
   return total / g.size();
 }
 
-double nk::Landscape::evaluate_position (unsigned int i, ga::Genome const& g) const
+double nk::Landscape::evaluate_position (unsigned int i, ga::Genome const& g) const throw(InvalidGenomeSize, InvalidPosition)
 {
+  // Throw if genome size != N
+  if (g.size() != this->_n) throw nk::Landscape::InvalidGenomeSize();
+
+  // Throw if invalid position
+  if (i >= g.size()) throw nk::Landscape::InvalidPosition();
+
   std::size_t seed = this->_id ^ i;
 
   // The neighbours are all taken from the immediate "right" of the
