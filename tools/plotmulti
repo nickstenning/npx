@@ -2,18 +2,18 @@
 
 import os
 import sys
-import pylab
+import matplotlib.pyplot as plt
 import numpy as np
 
 data = np.loadtxt(sys.stdin, unpack=True)
 x = np.arange(len(data[0]))
 
 for i, d in enumerate(data):
-    pylab.plot(x, d, label="col %d" % i)
+    plt.plot(x, d, label="col %d" % i)
 
-pylab.legend()
+plt.legend()
 
 if os.isatty(sys.stdout.fileno()):
-    pylab.show()
+    plt.show()
 else:
-    pylab.savefig(sys.stdout, format='png')
+    plt.savefig(sys.stdout, format='png')

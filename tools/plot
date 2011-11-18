@@ -2,13 +2,13 @@
 
 import os
 import sys
-import pylab
+import matplotlib.pyplot as plt
 
 data = [float(line) for line in sys.stdin]
 
-pylab.plot(data)
+plt.plot(data)
 
 if os.isatty(sys.stdout.fileno()):
-    pylab.show()
+    plt.show()
 else:
-    pylab.savefig(sys.stdout, format='png')
+    plt.savefig(sys.stdout, format='png')
