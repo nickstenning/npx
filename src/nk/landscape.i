@@ -1,4 +1,4 @@
-%module nk
+%module landscape
 
 %warnfilter(SWIGWARN_PARSE_NAMED_NESTED_CLASS) nk::Landscape::InvalidGenomeSize;
 %warnfilter(SWIGWARN_PARSE_NAMED_NESTED_CLASS) nk::Landscape::InvalidPosition;
