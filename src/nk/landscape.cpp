@@ -4,7 +4,7 @@
 
 #include <boost/functional/hash/hash.hpp>
 
-#include "nk.h"
+#include "landscape.h"
 
 #include "ga/genome.h"
 #include "random.h"

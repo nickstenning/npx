@@ -1,4 +1,4 @@
-#include "nk/nk.h"
+#include "nk/landscape.h"
 #include "ga/genome.h"
 
 #include <boost/test/unit_test.hpp>

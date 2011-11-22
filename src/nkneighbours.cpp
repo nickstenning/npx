@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <numeric>
 
-#include "nk/nk.h"
+#include "nk/landscape.h"
 #include "ga/genome.h"
 #include "random.h"
 
@@ -26,7 +26,7 @@ public:
       _new_mean = _old_mean + (x - _old_mean)/_n;
       _new_sdev = _old_sdev + (x - _old_mean)*(x - _new_mean);
 
-      _old_mean = _new_mean; 
+      _old_mean = _new_mean;
       _old_sdev = _new_sdev;
     }
   }
@@ -80,7 +80,7 @@ int main (int argc, char const *argv[])
   stream_statistics ss;
 
   ga::Genome g(n);
-  
+
   while (std::cin >> g) {
     // Print fitness of genome
     double orig_fitness = landscape.evaluate(g);
@@ -119,4 +119,4 @@ int main (int argc, char const *argv[])
 
   return 0;
 }
-        
+

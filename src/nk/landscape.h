@@ -1,5 +1,5 @@
-#ifndef NK_H
-#define NK_H
+#ifndef LANDSCAPE_H
+#define LANDSCAPE_H
 
 #include <exception>
 #include <vector>
@@ -54,4 +54,4 @@ namespace nk
 
 } /* nk:: */
 
-#endif // NK_H
+#endif // LANDSCAPE_H

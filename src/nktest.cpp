@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "nk/nk.h"
+#include "nk/landscape.h"
 #include "ga/population.h"
 #include "ga/genome.h"
 #include "random.h"
