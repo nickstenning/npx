@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+# Walk the src tree and for each .i file, print out the path to the
+# corresponding .so python extension which needs to be built
+
+from os import path, walk
+
+here = path.dirname(__file__)
+out_dir = path.join(here, '..', 'npx')
+src_dir = path.join(here, '..', 'src')
+
+for d, dirs, files in walk(src_dir):
+    i_files = (f for f in files if f[-2:] == '.i')
+    i_files = [path.relpath(d, src_dir) + '/_' + f[:-2] + '.so' for f in i_files]
+    if i_files:
+        print '\n'.join(path.normpath(path.join(out_dir, f)) for f in i_files)
+
