@@ -1,4 +1,5 @@
 /.redo
+/npx.egg-info
 /build/bsfruns
 /build/evolve
 /build/gen
