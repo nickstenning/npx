@@ -1,2 +1,3 @@
+*.c
 *.so
-/nk/landscape.py
+*.html
