@@ -1,1 +1,0 @@
-head -c4 /dev/urandom  | od -tuI | head -1 | awk '{print $2}'

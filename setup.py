@@ -17,7 +17,12 @@ setup(
             'nkneighbours = npx.command:nkneighbours',
             'bagen = npx.command:bagen',
             'bamtest = npx.command:bamtest',
-            'nkbsf = npx.command.nkbsf:main'
+            'nkbsf = npx.command.nkbsf:main',
+            'plot = npx.command.plot:main',
+            'plothist = npx.command.plothist:main',
+            'plotmse = npx.command.plotmse:main',
+            'plotmulti = npx.command.plotmulti:main',
+            'stats = npx.command.stats:main',
         ],
     }
 )

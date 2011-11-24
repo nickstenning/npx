@@ -1,1 +1,0 @@
-export RNG_SEED="$(./rand)" && echo "# export RNG_SEED=${RNG_SEED}" >&2
