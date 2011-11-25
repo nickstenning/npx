@@ -22,7 +22,8 @@ def main():
     plt.plot(x, min_, '--k', alpha=0.4)
     plt.fill_between(x, mean - serr, mean + serr, alpha=0.1)
 
-    plt.semilogx()
+    if "-l" in sys.argv:
+        plt.semilogx()
 
     if os.isatty(sys.stdout.fileno()):
         plt.show()
