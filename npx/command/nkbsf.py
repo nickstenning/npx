@@ -59,6 +59,7 @@ def print_bsfs(bsfs):
 
 def main():
     parser = argparse.ArgumentParser(description='Run multiple simultaneous GAs and print their best-so-far statistics')
+    parser.add_argument('-p', '--profile', help='IPython parallel profile to use', default='default')
     parser.add_argument('npops', type=int, help='Number of populations')
     parser.add_argument('ngens', type=int, help='Number of generations')
     parser.add_argument('popsize', type=int, help='Population size')
@@ -68,9 +69,8 @@ def main():
     args = parser.parse_args()
 
     landscape = nk.Landscape(args.n, args.k, 651196428)
-    populations = make_populations(args.npops, args.popsize, args.n)
 
-    rc = Client()
+    rc = Client(profile=args.profile)
     dview = rc[:]
 
     print >>sys.stderr, "# NK ID = %s" % landscape.id
@@ -79,10 +79,14 @@ def main():
     dview.block = True
 
     dview['landscape'] = landscape
-    dview.scatter('populations', populations)
+
+    dview.scatter('populations', range(args.npops))
+
+    dview['make_populations'] = make_populations
     dview['ga_init'] = ga_init
     dview['ga_tick'] = ga_tick
 
+    dview.execute('populations = make_populations(len(populations), %d, %d)' % (args.popsize, args.n))
     dview.execute('ga_init(populations, landscape)')
 
     dview['tick'] = tick = 0
