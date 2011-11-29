@@ -52,9 +52,9 @@ def ga_tick():
                 if crossover == '1point':
                     cand.obj = bitarray.crossover_binary_1point(cand.obj, random.choice(pop).obj)
                 elif crossover == '4point':
-                    cand.obj = bitarray.crossover_binary_mpoint(cand.obj, random.choice(pop).obj, m=4)
+                    cand.obj = bitarray.crossover_binary_mpoint(cand.obj, random.choice(pop).obj, 4)
                 elif crossover == 'uni0.2':
-                    cand.obj = bitarray.crossover_binary_uniform(cand.obj, random.choice(pop).obj, w=0.2)
+                    cand.obj = bitarray.crossover_binary_uniform(cand.obj, random.choice(pop).obj, 0.2)
                 elif crossover == 'uni0.5':
-                    cand.obj = bitarray.crossover_binary_uniform(cand.obj, random.choice(pop).obj, w=0.2)
+                    cand.obj = bitarray.crossover_binary_uniform(cand.obj, random.choice(pop).obj, 0.2)
             pop[other_idx] = cand
