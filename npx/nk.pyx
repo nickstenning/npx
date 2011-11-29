@@ -19,13 +19,21 @@ cdef import from "stdlib.h":
 cdef ulong _hash_combine(ulong seed, ulong v):
     return seed ^ (v + 0x9e3779b9UL + (seed << 6) + (seed >> 2))
 
+EPISTASIS_TYPES = {
+    'nearneighbour': 1,
+    'random': 2
+}
+
 cdef class Landscape:
     cdef public ulong n, k, id
+    cdef int epistasis_type
 
-    def __init__(self, ulong n=0, ulong k=0, id=None):
+    def __init__(self, ulong n=0, ulong k=0, id=None, epistasis='nearneighbour'):
         self.n = n
         self.k = k
         self.id = id or random.getrandbits(32)
+
+        self.epistasis_type = EPISTASIS_TYPES.get(epistasis) or 1
 
     @cython.cdivision(True)
     cpdef double evaluate(self, char obj[]) except -1:
@@ -44,7 +52,7 @@ cdef class Landscape:
         return s / l
 
     @cython.cdivision(True)
-    cdef double evaluate_position(self, ulong length, char* obj, ulong i):
+    cpdef double evaluate_position(self, ulong length, char* obj, ulong i):
         cdef ulong j = 0
         cdef double s = 0.0
 
@@ -56,10 +64,22 @@ cdef class Landscape:
         # at i, i + 1, i + 2.
         #
         # If we overrun the end of the genome, we wrap to the beginning.
-        seed = _hash_combine(seed, obj[i])
 
-        for j in xrange(self.k):
-            seed = _hash_combine(seed, obj[(i + j + 1UL) % length])
+        if self.epistasis_type == 1: # near-neighbour epistasis
+            seed = _hash_combine(seed, obj[i])
+
+            for j in xrange(self.k):
+                seed = _hash_combine(seed, obj[(i + j + 1UL) % length])
+
+        elif self.epistasis_type == 2: # random epistasis
+            c_libc_srandom(seed)
+            seed = _hash_combine(seed, obj[i])
+
+            for j in xrange(self.k):
+                # the gibberish on the right has to be a little complicated so as to avoid selecting
+                # *this gene* as one of the epistatic neighbours: it will return an index randomly
+                # chosen from all the positions *except* i.
+                seed = _hash_combine(seed, obj[(i + 1UL + (c_libc_random() % length - 1)) % length])
 
         c_libc_srandom(seed)
 
