@@ -24,6 +24,7 @@ def main():
     args = parser.parse_args()
 
     rc = Client(profile=args.profile)
+    nc = len(rc)
 
     dv = rc[:]
     dv.block = True
@@ -40,10 +41,18 @@ def main():
     dv.execute('parallel.crossover = crossover')
 
     print >>sys.stderr, "# NK ID = %s" % landscape.id
-    print >>sys.stderr, "# Running on %s processes" % len(rc)
+    print >>sys.stderr, "# Running on %s processes" % nc
 
     tick = 0
-    dv.apply(parallel.make_populations, args.npops, args.popsize, args.n)
+
+    npops = [args.npops // nc] * nc
+
+    for i in xrange(args.npops % nc):
+        npops[i] += 1
+
+    for i in xrange(nc):
+        rc[i].apply(parallel.make_populations, npops[i], args.popsize, args.n)
+
     dv.apply(parallel.ga_init)
 
     while tick < args.popsize * args.ngens:
