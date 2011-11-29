@@ -13,6 +13,8 @@ def main():
                         help='IPython parallel profile to use', default='default')
     parser.add_argument('-x', '--crossover',
                         help='Crossover type to use', default='none')
+    parser.add_argument('-e', '--epistasis',
+                        help='Epistasis type to use', default='random')
     parser.add_argument('npops', type=int, help='Number of populations')
     parser.add_argument('ngens', type=int, help='Number of generations')
     parser.add_argument('popsize', type=int, help='Population size')
@@ -31,7 +33,7 @@ def main():
 
     dv.execute('from npx import parallel')
 
-    landscape = nk.Landscape(args.n, args.k, 651196428)
+    landscape = nk.Landscape(args.n, args.k, 651196428, args.epistasis)
     dv['landscape'] = landscape
     dv.execute('parallel.landscape = landscape')
     dv['crossover'] = args.crossover

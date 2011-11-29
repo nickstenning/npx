@@ -52,7 +52,7 @@ cdef class Landscape:
         return s / l
 
     @cython.cdivision(True)
-    cpdef double evaluate_position(self, ulong length, char* obj, ulong i):
+    cdef double evaluate_position(self, ulong length, char* obj, ulong i):
         cdef ulong j = 0
         cdef double s = 0.0
 
