@@ -5,6 +5,7 @@ from npx import bitarray
 
 landscape = None
 populations = None
+crossover = None
 
 class Individual(object):
     def __init__(self, obj=None, fitness=0.0):
@@ -48,5 +49,12 @@ def ga_tick():
         if cand.fitness > pop[other_idx].fitness:
             cand.obj = bitarray.mutate_single(pop[cand_idx].obj)
             if random.random() < 0.6:
-                cand.obj = bitarray.crossover_binary_uniform(cand.obj, random.choice(pop).obj, 0.2)
+                if crossover == '1point':
+                    cand.obj = bitarray.crossover_binary_1point(cand.obj, random.choice(pop).obj)
+                elif crossover == '4point':
+                    cand.obj = bitarray.crossover_binary_mpoint(cand.obj, random.choice(pop).obj, m=4)
+                elif crossover == 'uni0.2':
+                    cand.obj = bitarray.crossover_binary_uniform(cand.obj, random.choice(pop).obj, w=0.2)
+                elif crossover == 'uni0.5':
+                    cand.obj = bitarray.crossover_binary_uniform(cand.obj, random.choice(pop).obj, w=0.2)
             pop[other_idx] = cand

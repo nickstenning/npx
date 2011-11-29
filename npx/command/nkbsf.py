@@ -9,7 +9,10 @@ def print_bsfs(bsfs):
 
 def main():
     parser = argparse.ArgumentParser(description='Run multiple simultaneous GAs and print their best-so-far statistics')
-    parser.add_argument('-p', '--profile', help='IPython parallel profile to use', default='default')
+    parser.add_argument('-p', '--profile',
+                        help='IPython parallel profile to use', default='default')
+    parser.add_argument('-x', '--crossover',
+                        help='Crossover type to use', default='none')
     parser.add_argument('npops', type=int, help='Number of populations')
     parser.add_argument('ngens', type=int, help='Number of generations')
     parser.add_argument('popsize', type=int, help='Population size')
@@ -31,6 +34,8 @@ def main():
     landscape = nk.Landscape(args.n, args.k, 651196428)
     dv['landscape'] = landscape
     dv.execute('parallel.landscape = landscape')
+    dv['crossover'] = args.crossover
+    dv.execute('parallel.crossover = crossover')
 
     print >>sys.stderr, "# NK ID = %s" % landscape.id
     print >>sys.stderr, "# Running on %s processes" % len(rc)
